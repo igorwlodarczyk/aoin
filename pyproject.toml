@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "northpole_packing"
+authors = [
+    {name = "Igor Wlodarczyk", email = "252253@student.pwr.edu.pl"},
+]
+description = "Santa 2025 - Christmas Tree Packing Challenge"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["northpole_packing", "Santa 2025 - Christmas Tree Packing Challenge"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "shapely",
+    "matplotlib",
+    "numpy",
+    "moviepy"
+]
+version = "1.0.0"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["northpole_packing"]
+

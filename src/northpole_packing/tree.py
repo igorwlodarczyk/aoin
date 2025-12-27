@@ -15,6 +15,10 @@ class ChristmasTree:
         self.center_x = Decimal(center_x)
         self.center_y = Decimal(center_y)
         self.angle = Decimal(angle)
+        self.minx = None
+        self.miny = None
+        self.maxx = None
+        self.maxy = None
 
         trunk_w = Decimal("0.15")
         trunk_h = Decimal("0.2")
@@ -68,10 +72,34 @@ class ChristmasTree:
     def get_params(self):
         return float(self.center_x), float(self.center_y), float(self.angle)
 
+    def get_bounds(self):
+        if (
+            self.minx is None
+            or self.miny is None
+            or self.maxx is None
+            or self.maxy is None
+        ):
+            tree_bounds = self.polygon.bounds
+            self.minx = Decimal(tree_bounds[0]) / SCALE_FACTOR
+            self.miny = Decimal(tree_bounds[1]) / SCALE_FACTOR
+            self.maxx = Decimal(tree_bounds[2]) / SCALE_FACTOR
+            self.maxy = Decimal(tree_bounds[3]) / SCALE_FACTOR
+
+        return self.minx, self.miny, self.maxx, self.maxy
+
 
 def has_collision(trees):
     for t1, t2 in combinations(trees, 2):
         if t1.polygon.intersects(t2.polygon) and not t1.polygon.touches(t2.polygon):
+            return True
+    return False
+
+
+def has_collision_with_candidate(trees, candidate):
+    cand_poly = candidate.polygon
+    for tree in trees:
+        poly = tree.polygon
+        if cand_poly.intersects(poly) and not cand_poly.touches(poly):
             return True
     return False
 

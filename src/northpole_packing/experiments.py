@@ -1,10 +1,10 @@
-from northpole_packing.solver import SimulatedAnnealing
+import sys
+from northpole_packing.genetic_algorithm import GeneticAlgorithm
 
 
-def simulated_annealing():
-    sa = SimulatedAnnealing(100)
-    best_solution, best_solution_cost = sa.solve("output.csv")
-    print(best_solution_cost)
-
-
-simulated_annealing()
+ga = GeneticAlgorithm(
+    "output.log",
+    num_trees=100,
+    num_generations=sys.maxsize
+)
+ga.solve()

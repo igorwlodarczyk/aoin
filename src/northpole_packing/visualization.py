@@ -11,8 +11,9 @@ from northpole_packing.const import SCALE_FACTOR
 from northpole_packing.tree import load_trees_from_string, calculate_side_length
 
 
-def plot_results(side_length, placed_trees, output_file=None, mono_color=False):
+def plot_results(placed_trees, output_file=None, mono_color=False):
     """Plots the arrangement of trees and the bounding square."""
+    side_length = calculate_side_length(placed_trees)
     num_trees = len(placed_trees)
     _, ax = plt.subplots(figsize=(6, 6))
     colors = plt.cm.viridis([i / num_trees for i in range(num_trees)])
@@ -89,8 +90,7 @@ def create_progress_video(output_file):
             previous_best_tree_str != trees_str and previous_best_tree_str is not None
         ):
             trees = load_trees_from_string(trees_str)
-            side = calculate_side_length(trees)
-            plot_results(side, trees, tmp_dir / str(tree_idx), mono_color=True)
+            plot_results(trees, tmp_dir / str(tree_idx), mono_color=True)
             previous_best_tree_str = trees_str
             tree_idx += 1
 

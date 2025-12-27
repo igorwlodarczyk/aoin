@@ -1,6 +1,7 @@
 import random
 import statistics
 import numpy as np
+import time
 from northpole_packing.initialization import greedy_initialization
 from northpole_packing.tree import calculate_side_length, convert_trees_to_string
 
@@ -111,9 +112,11 @@ class GeneticAlgorithm:
         return Individual(tree_angles=new_tree_angles)
 
     def solve(self):
+        start_time = time.time()
         with open(self.output_log_path, "w") as log_file:
             population = self.initialize_population_random()
             for _ in range(self.num_generations):
+                print(f"Epoch {_} - elapsed time: {round(time.time() - start_time, 2)} s")
                 new_population = []
                 elite_count = int(self.elite * self.pop_size)
                 if elite_count > 0:

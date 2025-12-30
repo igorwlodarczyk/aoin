@@ -26,3 +26,7 @@ version = "1.0.0"
 where = ["src"]
 include = ["northpole_packing"]
 
+[project.scripts]
+solve_sa = "northpole_packing.experiments:solve_sa"
+solve_ga = "northpole_packing.experiments:solve_ga"
+

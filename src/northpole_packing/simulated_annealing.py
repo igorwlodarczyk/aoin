@@ -2,6 +2,7 @@ import copy
 import random
 import numpy as np
 import math
+import time
 
 from northpole_packing.initialization import greedy_initialization
 from northpole_packing.const import PRECISION
@@ -49,7 +50,10 @@ class SimulatedAnnealing:
         return trees
 
     def solve(self):
+        start_time = time.time()
         best_solution = greedy_initialization(num_trees=self.num_trees)
+        end_time = time.time()
+        print(f"Initialized starting solution using greedy algorithm: {round(end_time - start_time, 2)} s.")
         best_solution_cost = calculate_side_length(best_solution)
         current_solution = copy.deepcopy(best_solution)
         current_cost = best_solution_cost

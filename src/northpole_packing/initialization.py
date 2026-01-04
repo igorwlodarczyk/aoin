@@ -62,6 +62,7 @@ def greedy_initialization(
     starting_dist=0.4,
     step=0.1,
     search_depth: int = 5,
+    optimize: bool = True,
 ):
     def calculate_side_length_from_bounds(minx, miny, maxx, maxy):
         width = maxx - minx
@@ -93,16 +94,17 @@ def greedy_initialization(
         tree_placed = False
         dist = starting_dist
         trees_to_explore = trees
-        if len(trees_to_explore) > 30:
-            center_x, center_y = (minx + maxx / 2), (miny + maxy) / 2
-            sorted_trees = sorted(
-                trees_to_explore,
-                key=lambda s: (s.center_x - center_x) ** 2
-                + (s.center_y - center_y) ** 2,
-            )
+        if optimize:
+            if len(trees_to_explore) > 30:
+                center_x, center_y = (minx + maxx / 2), (miny + maxy) / 2
+                sorted_trees = sorted(
+                    trees_to_explore,
+                    key=lambda s: (s.center_x - center_x) ** 2
+                    + (s.center_y - center_y) ** 2,
+                )
 
-            k = int(len(sorted_trees) * 0.6)
-            trees_to_explore = sorted_trees[-k:]
+                k = int(len(sorted_trees) * 0.6)
+                trees_to_explore = sorted_trees[-k:]
         while not tree_placed:
             tree_x = None
             tree_y = None

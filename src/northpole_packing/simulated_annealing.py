@@ -53,7 +53,9 @@ class SimulatedAnnealing:
         start_time = time.time()
         best_solution = greedy_initialization(num_trees=self.num_trees)
         end_time = time.time()
-        print(f"Initialized starting solution using greedy algorithm: {round(end_time - start_time, 2)} s.")
+        print(
+            f"Initialized starting solution using greedy algorithm: {round(end_time - start_time, 2)} s."
+        )
         best_solution_cost = calculate_side_length(best_solution)
         current_solution = copy.deepcopy(best_solution)
         current_cost = best_solution_cost

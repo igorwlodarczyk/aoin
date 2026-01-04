@@ -18,7 +18,9 @@ dependencies = [
     "shapely",
     "matplotlib",
     "numpy",
-    "moviepy"
+    "moviepy",
+    "scikit-learn",
+    "numpy"
 ]
 version = "1.0.0"
 

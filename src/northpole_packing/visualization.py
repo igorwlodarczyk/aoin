@@ -98,7 +98,7 @@ def create_progress_video(output_file):
         glob.glob(f"{tmp_dir}/*.png"),
         key=lambda entry: int(entry.split("/")[-1].replace(".png", "")),
     )
-    fps = 5
+    fps = 45
     clip = ImageSequenceClip(paths, fps=fps)
     clip.write_videofile("out.mp4", codec="libx264", audio=False, fps=fps)
     shutil.rmtree(tmp_dir)

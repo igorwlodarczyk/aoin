@@ -37,3 +37,6 @@ develop-eggs/
 build
 .pytest_cache
 .DS_Store
+
+!/data/
+.ipynb_checkpoints/

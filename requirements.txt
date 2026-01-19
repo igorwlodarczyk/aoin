@@ -1,2 +1,4 @@
 black
+matplotlib
+jupyterlab
 -e .

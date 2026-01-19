@@ -38,5 +38,5 @@ build
 .pytest_cache
 .DS_Store
 
-!/data/
+!/data/*
 .ipynb_checkpoints/

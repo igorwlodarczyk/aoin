@@ -12,7 +12,7 @@ from northpole_packing.tree import (
     ChristmasTree,
     has_collision_with_candidate,
     calculate_side_length,
-convert_trees_to_string,
+    convert_trees_to_string,
 )
 
 
@@ -264,9 +264,8 @@ class GeneticAlgorithm:
                     sorted_pop = sorted(population, key=lambda s: s.score)
                     elites = sorted_pop[:elite_count]
                     new_population.extend(elites)
-
+                start_time = time.time()
                 while len(new_population) < self.pop_size:
-                    start_time = time.time()
                     parent1 = self.selection(
                         population, self.selection_type, self.tournament_size
                     )
@@ -280,10 +279,14 @@ class GeneticAlgorithm:
 
                     child = self.mutation(child, self.pm)
                     new_population.append(child)
-                    print(f"(Epoch {epoch}) Population size: {len(new_population)}/{self.pop_size}")
+                    print(
+                        f"(Epoch {epoch}) Population size: {len(new_population)}/{self.pop_size}"
+                    )
                 population = new_population
                 end_time = time.time()
-                print(f"New population creation finished in {end_time-start_time:.2f} seconds")
+                print(
+                    f"New population creation finished in {end_time-start_time:.2f} seconds"
+                )
                 population_scores = [individual.score for individual in population]
                 best_score = min(population_scores)
                 worst_score = max(population_scores)
@@ -300,5 +303,19 @@ class GeneticAlgorithm:
                 )
                 log_file.flush()
 
-ga = GeneticAlgorithm("ga_long.log", num_trees=100, num_generations=10000, pop_size=50)
-ga.solve()
+
+ga = GeneticAlgorithm("ga_long2.log", num_trees=100, num_generations=10000, pop_size=75)
+
+parent1 = greedy_initialization(100)
+print(1)
+parent2 = greedy_initialization(100)
+print(1)
+from northpole_packing.visualization import plot_results
+
+plot_results(parent1, "parent1")
+plot_results(parent2, "parent2")
+print(1)
+child = ga.crossover(Individual(parent1), Individual(parent2))
+child = child.trees
+
+plot_results(child, "child")

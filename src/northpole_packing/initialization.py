@@ -1,6 +1,7 @@
 import math
 import random
 from decimal import Decimal
+from shapely.ops import unary_union
 
 from northpole_packing.tree import (
     ChristmasTree,
@@ -10,7 +11,7 @@ from northpole_packing.tree import (
 from northpole_packing.const import PRECISION, SCALE_FACTOR
 
 
-def initialize_trees_random(num_trees, max_attempts=1000, box_pct=0.95):
+def initialize_trees_random(num_trees, max_attempts=1000, box_pct=0.85):
     def calculate_min_rectangle_size_for_single_tree():
         tree = ChristmasTree("0", "0", "0")
         minx, miny, maxx, maxy = tree.polygon.bounds
@@ -63,6 +64,7 @@ def greedy_initialization(
     step=0.1,
     search_depth: int = 5,
     optimize: bool = True,
+    init_trees: list = None
 ):
     def calculate_side_length_from_bounds(minx, miny, maxx, maxy):
         width = maxx - minx
@@ -81,14 +83,27 @@ def greedy_initialization(
             max(candidate_maxy, maxy),
         )
 
-    if tree_angles is None:
+    if tree_angles is None and init_trees is None:
         tree_angles = [random.uniform(0, 360) for _ in range(num_trees)]
+    else:
+        tree_angles = [random.uniform(0, 360) for _ in range(num_trees - len(init_trees) + 1)]
 
-    trees = []
-    first_tree = ChristmasTree("0", "0", str(tree_angles[0]))
-    trees.append(first_tree)
 
-    minx, miny, maxx, maxy = first_tree.get_bounds()
+    if not init_trees:
+        trees = []
+        first_tree = ChristmasTree("0", "0", str(tree_angles[0]))
+        trees.append(first_tree)
+        minx, miny, maxx, maxy = first_tree.get_bounds()
+    else:
+        trees = init_trees
+        all_polygons = [t.polygon for t in trees]
+        bounds = unary_union(all_polygons).bounds
+
+        minx = Decimal(bounds[0]) / SCALE_FACTOR
+        miny = Decimal(bounds[1]) / SCALE_FACTOR
+        maxx = Decimal(bounds[2]) / SCALE_FACTOR
+        maxy = Decimal(bounds[3]) / SCALE_FACTOR
+
 
     for idx, tree_angle in enumerate(tree_angles[1:]):
         tree_placed = False

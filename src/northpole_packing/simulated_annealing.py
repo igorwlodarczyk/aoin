@@ -16,13 +16,14 @@ from northpole_packing.tree import (
 
 class SimulatedAnnealing:
     def __init__(
-        self, output_log_path, num_trees=100, alpha=0.992, min_t=0.001, start_temp=1000
+        self, output_log_path, num_trees=100, alpha=0.992, min_t=0.001, start_temp=1000, init_trees: list | None = None
     ):
         self.output_log_path = output_log_path
         self.num_trees = num_trees
         self.alpha = alpha
         self.min_t = min_t
         self.start_temp = start_temp
+        self.init_trees = init_trees
 
     @staticmethod
     def generate_neighbor_sol(trees, max_attempts=1000):
@@ -51,7 +52,10 @@ class SimulatedAnnealing:
 
     def solve(self):
         start_time = time.time()
-        best_solution = greedy_initialization(num_trees=self.num_trees)
+        if self.init_trees is None:
+            best_solution = greedy_initialization(num_trees=self.num_trees)
+        else:
+            best_solution = self.init_trees
         end_time = time.time()
         print(
             f"Initialized starting solution using greedy algorithm: {round(end_time - start_time, 2)} s."
